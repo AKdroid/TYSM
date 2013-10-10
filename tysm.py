@@ -167,14 +167,14 @@ Graph API Explorer : https://developers.facebook.com/tools/explorer
 	myfb.getFeed(200);				#Get the feed with the post limit and parse
 	postsdone=myfb.getDoneList();			
 	fields=myfb.parse();	
-				
+	types=['status','video','photo'];	
 	for post in fields:
 		#	post a like and comment if following is True
 		#	post id is not already covered
 		#	post is a status and not from you
 		#	post contains the string 'happy' in any case
-		if (not post['id'] in postsdone) and post['type']==u'status' and (post['message'].lower().count(u'happy')>0) \
-				and post['from'] != myfb.getid():
+		if (not post['id'] in postsdone) and post['type'] in types and 'message' in post.keys() and \
+				(post['message'].lower().count(u'happy')>0) and post['from'] != myfb.getid():
 			myfb.like(post['id']);	
 			if add_name_in_comment:
 				postfix=post['from-name']+" ";
@@ -186,3 +186,4 @@ Graph API Explorer : https://developers.facebook.com/tools/explorer
 
 if __name__ == "__main__":
 	main();	
+
