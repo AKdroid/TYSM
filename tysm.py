@@ -173,16 +173,19 @@ Graph API Explorer : https://developers.facebook.com/tools/explorer
 		#	post id is not already covered
 		#	post is a status and not from you
 		#	post contains the string 'happy' in any case
-		if (not post['id'] in postsdone) and post['type'] in types and 'message' in post.keys() and \
-				(post['message'].lower().count(u'happy')>0) and post['from'] != myfb.getid():
-			myfb.like(post['id']);	
-			if add_name_in_comment:
-				postfix=post['from-name']+" ";
-			else:
-				postfix=""			
-			myfb.comment(post['id'],message=message+postfix+'!!! :)');
-			myfb.addToDoneList(post['id']);
-			print 'Liked and Commented on post by ' + post['from-name'];
+		try:
+			if (not post['id'] in postsdone) and post['type'] in types and 'message' in post.keys() and \
+					(post['message'].lower().count(u'happy')>0) and post['from'] != myfb.getid():
+				myfb.like(post['id']);	
+				if add_name_in_comment:
+					postfix=post['from-name']+" ";
+				else:
+					postfix=""			
+				myfb.comment(post['id'],message=message+postfix+'!!! :)');
+				myfb.addToDoneList(post['id']);
+				print 'Liked and Commented on post by ' + post['from-name'];
+		except:
+			continue;
 
 if __name__ == "__main__":
 	main();	
