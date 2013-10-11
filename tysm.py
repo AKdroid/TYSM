@@ -160,11 +160,10 @@ Graph API Explorer : https://developers.facebook.com/tools/explorer
 	if prompt_for_message:
 		message = raw_input('Enter your comment message:')
 	else:
-		message = 'Thank you so much '
-
+		message = u'Thank you so much '
 	myfb=FB(access_token,message); 			#Initialize the FB object with access token
 	
-	myfb.getFeed(200);				#Get the feed with the post limit and parse
+	myfb.getFeed(10);				#Get the feed with the post limit and parse
 	postsdone=myfb.getDoneList();			
 	fields=myfb.parse();	
 	types=['status','video','photo'];	
@@ -181,7 +180,7 @@ Graph API Explorer : https://developers.facebook.com/tools/explorer
 					postfix=post['from-name']+" ";
 				else:
 					postfix=""			
-				myfb.comment(post['id'],message=message+postfix+'!!! :)');
+				myfb.comment(post['id'],message=unicode(message)+unicode(postfix)+u'!!! :)');
 				myfb.addToDoneList(post['id']);
 				print 'Liked and Commented on post by ' + post['from-name'];
 		except:
