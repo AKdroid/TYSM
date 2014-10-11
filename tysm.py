@@ -10,6 +10,7 @@
 import urllib
 import urllib2
 import json
+import random
 
 class FB:
 	'''
@@ -162,16 +163,18 @@ Graph API Explorer : https://developers.facebook.com/tools/explorer
 	else:
 		message = u'Thank you so much '
 	myfb=FB(access_token,message); 			#Initialize the FB object with access token
-	
-	myfb.getFeed(10);				#Get the feed with the post limit and parse
+	messages=['Thank you so much','Thanks','Thanks a lot','Thank you']
+	myfb.getFeed(100);				#Get the feed with the post limit and parse
 	postsdone=myfb.getDoneList();			
 	fields=myfb.parse();	
 	types=['status','video','photo'];	
+    
 	for post in fields:
 		#	post a like and comment if following is True
 		#	post id is not already covered
 		#	post is a status and not from you
 		#	post contains the string 'happy' in any case
+        	message = messages[random.randint(0,3)];        
 		try:
 			if (not post['id'] in postsdone) and post['type'] in types and 'message' in post.keys() and \
 					(post['message'].lower().count(u'happy')>0) and post['from'] != myfb.getid():
@@ -179,8 +182,9 @@ Graph API Explorer : https://developers.facebook.com/tools/explorer
 				if add_name_in_comment:
 					postfix=post['from-name']+" ";
 				else:
-					postfix=""			
-				myfb.comment(post['id'],message=unicode(message)+unicode(postfix)+u'!!! :)');
+					postfix=""
+
+				myfb.comment(post['id'],message=unicode(message)+u' '+unicode(postfix)+u'!!! :)');
 				myfb.addToDoneList(post['id']);
 				print 'Liked and Commented on post by ' + post['from-name'];
 		except:
